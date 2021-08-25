@@ -59,14 +59,10 @@ namespace Employee_Registration.Models
 
         public IEnumerable<EmployeeViewModel> ToEmployeeViewModels(IEnumerable<Employee> employees)
         {
-            var result = new List<EmployeeViewModel>();
-
             foreach (var item in employees)
             {
-                result.Add(ToEmployeeViewModel(item));
+                yield return ToEmployeeViewModel(item);
             }
-
-            return result;
         }
     }
 }

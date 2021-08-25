@@ -42,14 +42,10 @@ namespace Employee_Registration.Models
 
         public IEnumerable<CompanyViewModel> ToCompanyViewModels(IEnumerable<Company> companies)
         {
-            var result = new List<CompanyViewModel>();
-
             foreach (var item in companies)
             {
-                result.Add(ToCompanyViewModel(item));
+                yield return ToCompanyViewModel(item);
             }
-
-            return result;
         }
     }
 }

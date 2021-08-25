@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Employee_Registration.Controllers
 {
-    public class EmployeeController : Controller
+    public sealed class EmployeeController : Controller
     {
         private readonly ILogger<EmployeeController> _logger;
         private readonly IEmployeeManager _employeeManager;
@@ -69,8 +69,8 @@ namespace Employee_Registration.Controllers
 
                     var employeeViewModel = employeeViewModels.ToEmployeeViewModel(employee);
 
-                    SelectadListCompanies(selectedListCompany, employee);
-                    SelectadListEmployees(selectedListPosition, employee);
+                    SelectedListCompanies(selectedListCompany, employee);
+                    SelectedListEmployees(selectedListPosition, employee);
 
                     return View("edit", employeeViewModel);
                 }
@@ -144,7 +144,7 @@ namespace Employee_Registration.Controllers
             return new SelectList(items, "Id", "Name");
         }
 
-        private void SelectadListCompanies(SelectList selectedListCompany, Employee employee)
+        private void SelectedListCompanies(SelectList selectedListCompany, Employee employee)
         {
 
             foreach (var item in selectedListCompany)
@@ -159,7 +159,7 @@ namespace Employee_Registration.Controllers
             ViewBag.Company = selectedListCompany;
         }
 
-        private void SelectadListEmployees(SelectList selectedListPosition, Employee employee)
+        private void SelectedListEmployees(SelectList selectedListPosition, Employee employee)
         {
             foreach (var item in selectedListPosition)
             {

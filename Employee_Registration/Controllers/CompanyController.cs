@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Employee_Registration.Controllers
 {
-    public class CompanyController : Controller
+    public sealed class CompanyController : Controller
     {
         private readonly ILogger<CompanyController> _logger;
         private readonly ICompanyManager _companyManager;
