@@ -53,6 +53,12 @@ namespace Employee_Registration.Controllers
                     var companyViewModels = new CompanyViewModel();
 
                     var company = await _companyManager.GetCompanyByIdAsync(id.Value, token);
+
+                    if (company == null)
+                    {
+                        return BadRequest();
+                    }
+
                     var companyViewModel = companyViewModels.ToCompanyViewModel(company);
 
                     return View("edit", companyViewModel);

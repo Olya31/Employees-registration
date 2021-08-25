@@ -61,6 +61,12 @@ namespace Employee_Registration.Controllers
                     var employeeViewModels = new EmployeeViewModel();
 
                     var employee = await _employeeManager.GetEmployeeByIdAsync(id.Value, token);
+
+                    if(employee == null)
+                    {
+                        return BadRequest();
+                    }
+
                     var employeeViewModel = employeeViewModels.ToEmployeeViewModel(employee);
 
                     SelectadListCompanies(selectedListCompany, employee);
