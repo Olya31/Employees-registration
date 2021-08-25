@@ -1,0 +1,22 @@
+﻿@model CompanyViewModel
+
+<form asp-action="Edit" asp-controller="Company">
+    @Html.HiddenFor(c => c.Id)
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="Name" id="name" value="@(Model != null ? Model.Name : "")" class="form-control" placeholder="Name">
+    </div>
+    <div class="form-group">
+        <label for="organizationalAndLegalForm">Organizational and legal form</label>
+        <input type="text" name="OrganizationalAndLegalForm" id="organizationalAndLegalForm" value="@(Model != null ? Model.OrganizationalAndLegalForm : "")" class="form-control" placeholder="Organizational and legal form">
+    </div>
+    <div class="row justify-content-around">
+        <div class="col-4">
+            <button type="submit" class="btn btn-outline-secondary">@(Model != null && Model.Id != 0 ? "Edit": "Add")</button>
+        </div>
+        <div class="col-4">
+            <button asp-action="Index" class="btn btn-outline-secondary">Cancel</button>
+        </div>
+    </div>
+</form>
+

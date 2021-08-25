@@ -1,0 +1,38 @@
+﻿@model EmployeeViewModel
+
+<form asp-action="Edit" asp-controller="Employee">
+    @Html.HiddenFor(c => c.Id)
+    <div class="form-group">
+        <label for="surname">Surname</label>
+        <input type="text" name="Surname" id="surname" value="@(Model != null ? Model.Surname.ToString() : "")" class="form-control" placeholder="Surname">
+    </div>
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" name="Name" id="name" value="@(Model != null ? Model.Name.ToString() : "")" class="form-control" placeholder="Name">
+    </div>
+    <div class="form-group">
+        <label for="middleName">Middle name</label>
+        <input type="text" name="MiddleName" id="middleName" value="@(Model != null ? Model.MiddleName.ToString() : "")" class="form-control" placeholder="Middle name">
+    </div>
+    <div class="form-group">
+        <label for="employmentDate">Employment date</label>
+        <input type="datetime" name="EmploymentDate" id="employmentDate" value="@(Model != null ? Model.EmploymentDate.ToShortDateString() : DateTime.Now.ToShortDateString())" class="form-control" placeholder="Employment date">
+    </div>
+    <div class="form-group">
+        <label asp-for="CompanyId">Company</label>
+        <select class="custom-select" asp-for="CompanyId" asp-items="ViewBag.Company"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="Position">Position</label>
+        <select class="custom-select" asp-for="Position" asp-items="ViewBag.Position"></select>
+    </div>
+    <div class="row justify-content-around">
+        <div class="col-4">
+            <button type="submit" class="btn btn-outline-secondary">@(Model != null && Model.Id != 0 ? "Edit":"Add")</button>
+        </div>
+        <div class="col-4">
+            <button asp-action="Index" class="btn btn-outline-secondary">Cancel</button>
+        </div>
+    </div>
+</form>
+
