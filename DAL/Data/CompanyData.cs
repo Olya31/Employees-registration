@@ -12,7 +12,7 @@ namespace DAL.Data
     public sealed class CompanyData : ICompanyData
     {
         private readonly IConfiguration _configuration;
-        private string _connectionString;
+        private readonly string _connectionString;
 
         public CompanyData(IConfiguration configuration)
         {
@@ -55,8 +55,6 @@ namespace DAL.Data
                 "WHERE c.Id='{0}' " +
                 "GROUP BY c.Id, c.[Name], c.OrganizationalAndLegalForm ", id);
 
-            var company = new Company(0, "", "", 0);
-
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync(token);
@@ -72,14 +70,13 @@ namespace DAL.Data
                             var Name = reader.GetString(1);
                             var Description = reader.GetString(2);
                             var CountEmployees = reader.GetInt32(3);
-                            var companyItem = new Company(Id, Name, Description, CountEmployees);
-                            company = companyItem;
+                            return new Company(Id, Name, Description, CountEmployees);
                         }
-                    }
+                    } 
                 }
             }
 
-            return company;
+            return null;
         }
 
         public async Task<IEnumerable<Company>> GetAllAsync(CancellationToken token)
@@ -90,8 +87,6 @@ namespace DAL.Data
                 "LEFT JOIN Employees as e ON e.CompanyId = c.Id " +
                 "GROUP BY c.Id, c.[Name], c.OrganizationalAndLegalForm";
 
-            var companys = new List<Company>();
-
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync(token);
@@ -99,6 +94,8 @@ namespace DAL.Data
 
                 using (var reader = await command.ExecuteReaderAsync(token))
                 {
+                    var companys = new List<Company>();
+
                     if (reader.HasRows)
                     {
                         while (await reader.ReadAsync(token))
@@ -111,10 +108,10 @@ namespace DAL.Data
                             companys.Add(company);
                         }
                     }
+
+                    return companys;
                 }
             }
-
-            return companys;
         }
 
         private async Task<int> GetConnectionAsync(string sqlExpression, CancellationToken token)

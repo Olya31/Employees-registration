@@ -7,19 +7,29 @@ namespace BL.Managers.Interfaces
 {
     public interface IEmployeeManager
     {
-        //an add method that binds the controller and the database
+        /// <summary>
+        ///an add method that binds the controller and the database
+        /// </summary>
         Task<int> AddEmployeeAsync(Employee employee, CancellationToken token);
 
-        //an delete method that binds the controller and the database
+        /// <summary>
+        ///an delete method that binds the controller and the database
+        /// </summary>
         Task<int> DeleteEmployeeAsync(int id, CancellationToken token);
 
-        //an update method that binds the controller and the database
+        /// <summary>
+        ///an update method that binds the controller and the database
+        /// </summary>
         Task<int> UpdateEmployeeAsync(Employee employee, CancellationToken token);
 
-        //a method for getting an employee by identifier that links the controller and the database
+        /// <summary>
+        ///a method for getting an employee by identifier that links the controller and the database
+        /// </summary>
         Task<Employee> GetEmployeeByIdAsync(int id, CancellationToken token);
 
-        //a method to get all employees that links the controller and the database
+        /// <summary>
+        ///a method to get all employees that links the controller and the database
+        /// </summary>
         Task<IEnumerable<Employee>> GetAllEmployeesAsync(CancellationToken token);
     }
 }

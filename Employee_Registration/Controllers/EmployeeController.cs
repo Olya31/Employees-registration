@@ -1,10 +1,12 @@
 ﻿using BL.Managers.Interfaces;
 using BL.Models;
+using DAL.Models;
 using Employee_Registration.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -50,7 +52,8 @@ namespace Employee_Registration.Controllers
         {
             try
             {
-                var selectedListCompany = await GetCompaniesSelectedListAsync(token);
+                var companies = await _companyManager.GetAllCompaniesAsync(token);
+                var selectedListCompany = GetCompaniesSelectedList(companies, token);
                 var selectedListPosition = new SelectList( Position.Positions);
 
                 if (id.HasValue)
@@ -60,26 +63,8 @@ namespace Employee_Registration.Controllers
                     var employee = await _employeeManager.GetEmployeeByIdAsync(id.Value, token);
                     var employeeViewModel = employeeViewModels.ToEmployeeViewModel(employee);
 
-                    foreach (var item in selectedListCompany)
-                    {
-                        if (item.Value == employee.CompanyId.ToString())
-                        {
-                            item.Selected = true;
-                            break;
-                        }
-                    }
-
-                    foreach (var item in selectedListPosition)
-                    {
-                        if (item.Value == employee.Position)
-                        {
-                            item.Selected = true;
-                            break;
-                        }
-                    }
-
-                    ViewBag.Position = selectedListPosition;
-                    ViewBag.Company = selectedListCompany;
+                    SelectadListCompanies(selectedListCompany, employee);
+                    SelectadListEmployees(selectedListPosition, employee);
 
                     return View("edit", employeeViewModel);
                 }
@@ -145,13 +130,41 @@ namespace Employee_Registration.Controllers
             return NotFound();
         }
 
-        private async Task<SelectList> GetCompaniesSelectedListAsync(CancellationToken token)
+        private SelectList GetCompaniesSelectedList(IEnumerable<Company> companies, CancellationToken token)
         {
             var companyViewModel = new CompanyViewModel();
-            var companies = await _companyManager.GetAllCompaniesAsync(token);
             var items = companyViewModel.ToCompanyViewModels(companies);
 
             return new SelectList(items, "Id", "Name");
+        }
+
+        private void SelectadListCompanies(SelectList selectedListCompany, Employee employee)
+        {
+
+            foreach (var item in selectedListCompany)
+            {
+                if (item.Value == employee.CompanyId.ToString())
+                {
+                    item.Selected = true;
+                    break;
+                }
+            }
+
+            ViewBag.Company = selectedListCompany;
+        }
+
+        private void SelectadListEmployees(SelectList selectedListPosition, Employee employee)
+        {
+            foreach (var item in selectedListPosition)
+            {
+                if (item.Value == employee.Position)
+                {
+                    item.Selected = true;
+                    break;
+                }
+            }
+
+            ViewBag.Position = selectedListPosition;
         }
     }
 }

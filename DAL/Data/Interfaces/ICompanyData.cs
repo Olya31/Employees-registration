@@ -7,19 +7,29 @@ namespace DAL.Data.Interfaces
 {
     public interface ICompanyData
     {
-        //adding a company to the database
+        /// <summary>
+        ///adding a company to the database
+        /// </summary>
         Task<int> AddAsync(Company company, CancellationToken token);
 
-        //deleting a company from the database
+        /// <summary>
+        ///deleting a company from the database
+        /// </summary>
         Task<int> DeleteAsync(int id, CancellationToken token);
 
-        //changing company data in the database
+        /// <summary>
+        ///changing company data in the database
+        /// </summary>
         Task<int> UpdateAsync(Company company, CancellationToken token);
 
-        //getting a company by identifier for editing
+        /// <summary>
+        ///getting a company by identifier for editing
+        /// </summary>
         Task<Company> GetByIdAsync(int id, CancellationToken token);
 
-        //getting all companies from the database
+        /// <summary>
+        ///getting all companies from the database
+        /// </summary>
         Task<IEnumerable<Company>> GetAllAsync(CancellationToken token);
     }
 }

@@ -102,8 +102,7 @@ namespace Employee_Registration.Controllers
                     await _companyManager.DeleteCompanyAsync(id.Value, token);
 
                     return RedirectToAction("Index");
-                }
-                
+                }                
             }
             catch (Exception ex)
             {

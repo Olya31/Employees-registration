@@ -12,7 +12,7 @@ namespace DAL.Data
     public sealed class EmployeeData : IEmployeeData
     {
         private readonly IConfiguration _configuration;
-        private string _connectionString;
+        private readonly string _connectionString;
 
         public EmployeeData(IConfiguration configuration)
         {
@@ -66,9 +66,7 @@ namespace DAL.Data
             var sqlExpression = String.Format("SELECT e.*, c.Name as CompanyName " +
                 "FROM Employees AS e " +
                 "INNER JOIN Companies as c ON (e.CompanyId=c.id) " +
-                "WHERE e.Id='{0}'", id);
-
-            var employee = new Employee(0, "", "", "", DateTime.Now, 0, "", "");
+                "WHERE e.Id='{0}'", id);            
 
             using (var connection = new SqlConnection(_connectionString))
             {
@@ -89,7 +87,7 @@ namespace DAL.Data
                             var CompanyId = reader.GetInt32(5);
                             var Position = reader.GetString(6);
                             var CompanyName = reader.GetString(7);
-                            var employeeItem = new Employee(
+                            return new Employee(
                                 Id,
                                 Surname,
                                 Name,
@@ -98,13 +96,12 @@ namespace DAL.Data
                                 CompanyId,
                                 Position,
                                 CompanyName);
-                            employee = employeeItem;
                         }
                     }
                 }
             }
 
-            return employee;
+            return null;
         }
 
         public async Task<IEnumerable<Employee>> GetAllAsync(CancellationToken token)
@@ -113,8 +110,6 @@ namespace DAL.Data
                 "FROM Employees AS e " +
                 "INNER JOIN Companies as c ON (e.CompanyId=c.id)";
 
-            var employees = new List<Employee>();
-
             using (var connection = new SqlConnection(_connectionString))
             {
                 await connection.OpenAsync(token);
@@ -122,6 +117,8 @@ namespace DAL.Data
 
                 using (var reader = await command.ExecuteReaderAsync(token))
                 {
+                    var employees = new List<Employee>();
+
                     if (reader.HasRows)
                     {
                         while (await reader.ReadAsync(token))
@@ -146,10 +143,10 @@ namespace DAL.Data
                             employees.Add(employee);
                         }
                     }
+
+                    return employees;
                 }
             }
-
-            return employees;
         }
 
         private async Task<int> GetConnectionAsync(string sqlExpression, CancellationToken token)

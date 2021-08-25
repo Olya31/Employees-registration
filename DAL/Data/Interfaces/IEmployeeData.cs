@@ -7,19 +7,29 @@ namespace DAL.Data.Interfaces
 {
     public interface IEmployeeData
     {
-        //adding a employee to the database
+        /// <summary>
+        ///adding a employee to the database
+        /// </summary>
         Task<int> AddAsync(Employee employee, CancellationToken token);
 
-        //deleting a employee from the database
+        /// <summary>
+        ///deleting a employee from the database
+        /// </summary>
         Task<int> DeleteAsync(int id, CancellationToken token);
 
-        //changing employee data in the database
+        /// <summary>
+        ///changing employee data in the database
+        /// </summary>
         Task<int> UpdateAsync(Employee employee, CancellationToken token);
 
-        //getting a employee by identifier for editing
+        /// <summary>
+        ///getting a employee by identifier for editing
+        /// </summary>
         Task<Employee> GetByIdAsync(int id, CancellationToken token);
 
-        //getting all employees from the database
+        /// <summary>
+        ///getting all employees from the database
+        /// </summary>
         Task<IEnumerable<Employee>> GetAllAsync(CancellationToken token);
     }
 }
